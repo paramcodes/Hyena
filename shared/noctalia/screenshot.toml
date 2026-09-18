@@ -1,0 +1,5 @@
+[shell.screenshot]
+save_to_file = true
+copy_to_clipboard = true
+directory = "Pictures/Screenshots"
+filename_pattern = "screenshot-%Y%m%d-%H%M%S"

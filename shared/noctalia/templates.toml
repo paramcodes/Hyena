@@ -1,0 +1,7 @@
+[theme.templates]
+enable_builtin_templates = true
+builtin_ids              = ["niri", "kitty", "gtk3", "gtk4", "qt", "btop"]
+
+enable_community_templates = true
+community_ids               = ["zen-browser", "antigravity", "opencode", "pi-agent", "neovim", "fuzzel", "obs"]
+

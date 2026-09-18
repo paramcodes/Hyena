@@ -1,0 +1,5 @@
+   [idle.behavior.lock]
+   timeout = 600
+   action = "command"
+   command = "hyprlock"
+   enabled = true

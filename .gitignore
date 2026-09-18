@@ -1,0 +1,68 @@
+# ---------------------------------------------------------------------------
+# Noctalia runtime state — never commit the live state directory.
+# The bar/theme layout is shipped as shared/noctalia/settings.toml.example
+# instead, so runtime churn (clipboard, notifications, plugin caches) never
+# ends up in git.
+# ---------------------------------------------------------------------------
+.local/state/
+*.log
+*.log.[0-9]*
+settings.toml
+state.toml
+notification_history.json
+notification_history_assets/
+recently_used.json
+screen_time.json
+usage_counts.json
+clipboard/
+screen_recorder/
+thumbnails/
+community-templates/
+community-palettes/
+plugin-cache/
+plugins/
+location.json
+weather.json
+
+# ---------------------------------------------------------------------------
+# Caches / generated media
+# ---------------------------------------------------------------------------
+.cache/
+cache/
+__pycache__/
+*.pyc
+
+# ---------------------------------------------------------------------------
+# Local-only files, backups and install artefacts
+# ---------------------------------------------------------------------------
+dotfiles-backup/
+*.bak
+*.backup
+*.orig
+*.rej
+*.local
+*-local.conf
+.bak.*
+
+# ---------------------------------------------------------------------------
+# Secrets — never commit these even if a config happens to reference them
+# ---------------------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+known_hosts
+credentials
+secrets.toml
+
+# ---------------------------------------------------------------------------
+# Editor / OS noise
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

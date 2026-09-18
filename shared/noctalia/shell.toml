@@ -1,0 +1,16 @@
+[nightlight]
+enabled            = true
+force               = false
+temperature_day    = 6500
+temperature_night  = 4000
+
+[location]
+auto_locate = true       # IP-based geolocation
+# or set manually:
+# latitude    = 23.6693   # example only — use your real coords
+# longitude   = 86.1511
+# address     = "Bokaro, Jharkhand, India"
+
+custom_schedule = true  # true = use your own sunset/sunrise times below
+ sunset  = "18:00"
+ sunrise = "06:00"
