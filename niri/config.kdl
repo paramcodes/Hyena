@@ -272,6 +272,18 @@ layout {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // spawn-at-startup "waybar"
 spawn-at-startup "noctalia"
+// Polkit agent — path differs by distro, so resolve it at login.
+// spawn-sh-at-startup runs the line through a shell:
+//   Arch:      /usr/lib/xfce-polkit/xfce-polkit        (AUR xfce-polkit)
+//   Fedora:    /usr/libexec/xfce-polkit                (Fedora: xfce-polkit)
+//   Debian:    /usr/lib/x86_64-linux-gnu/xfce-polkit/xfce-polkit
+//   Ubuntu:    /usr/lib/x86_64-linux-gnu/xfce-polkit/xfce-polkit
+//   Gentoo:    /usr/libexec/xfce-polkit                (xfce-extra/xfce-polkit)
+//   Alpine:    /usr/lib/xfce-polkit/xfce-polkit
+//   Void:      /usr/libexec/xfce-polkit
+// Any agent works — polkit-gnome, lxpolkit and mate-polkit are all fine too.
+// On NixOS symlink the agent's binary into your PATH and use: spawn-at-startup "xfce-polkit"
+spawn-sh-at-startup "for p in /usr/libexec/xfce-polkit /usr/lib/xfce-polkit/xfce-polkit /usr/lib/x86_64-linux-gnu/xfce-polkit/xfce-polkit; do [ -x \"$p\" ] && exec \"$p\"; done; exec xfce-polkit"
 spawn-at-startup "/usr/libexec/xfce-polkit"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:

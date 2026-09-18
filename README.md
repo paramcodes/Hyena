@@ -242,6 +242,56 @@ niri). `ALT` is used for the window switcher.
   * `hypr/hyprland.lua` has a stray per-device rule for `epic-mouse-v1`.
   * Noctalia's lockscreen widgets are positioned for a 1366x768 `eDP-1` output.
 
+## Distro portability
+
+This rice was authored on **Fedora 44** but the configs themselves are
+distro-agnostic. The `install.sh` script just symlinks files — it checks for
+missing dependencies per distro (`dnf` / `pacman` / `apt` / `zypper`) but works
+anywhere bash ≥ 4 runs. What actually differs per distro is the availability of
+the packages:
+
+| Component | Arch | Fedora | Debian / Ubuntu | NixOS | openSUSE |
+|---|---|---|---|---|---|
+| **Hyprland** | `extra/hyprland` | `hyprland` | `hyprland` (testing/sid; `bookworm-backports` for 0.55) | `hyprland` in nixpkgs | X11:Wayland repo |
+| **niri** | `extra/niri` | `niri` | ❌ not packaged — build from source or use a community `.deb` | `niri` in nixpkgs | X11:Wayland repo |
+| **Noctalia (v5)** | `extra/noctalia` | `noctalia` (F44+; `noctalia-git` in `lionheartp/Hyprland` COPR for older) | packaged, but the version tracks upstream closely — see [docs](https://docs.noctalia.dev) | `noctalia` in nixpkgs-unstable, or the upstream flake (has home-manager / NixOS / Hjem modules + cachix binary cache) | OBS `home:neifua:Noctalia` |
+| **hyprlock** | `extra/hyprlock` | `hyprlock` | `hyprlock` (testing/sid + backports) | `hyprlock` in nixpkgs | X11:Wayland repo |
+
+Note: Noctalia **v4** (`noctalia-shell`, Quickshell-based) is no longer
+maintained — on older distro repos you may still see that name; prefer v5
+(package is just `noctalia`).
+
+Other portability notes:
+
+* **bash ≥ 4** is required by `install.sh` (`declare -A`); macOS's ancient bash
+  3.2 would need Homebrew bash, but that's irrelevant on Linux.
+* The niri config's polkit-agent line is now a `spawn-sh-at-startup` one-liner
+  that probes the standard paths on Fedora (`/usr/libexec/xfce-polkit`), Arch
+  (`/usr/lib/xfce-polkit/xfce-polkit`), and Debian/Ubuntu
+  (`/usr/lib/x86_64-linux-gnu/xfce-polkit/xfce-polkit`) and falls back to
+  whatever `xfce-polkit` is on `$PATH` — works on any distro with the AUR /
+  Fedora / Debian `xfce-polkit` package (or `polkit-gnome` / `lxpolkit` if you
+  edit that line).
+* `shared/gtk-3.0/settings.ini` ships with the KDE-only
+  `colorreload-gtk-module` / `window-decorations-gtk-module` line commented out
+  — those modules only exist inside a full KDE Plasma install and just produce
+  GTK warnings elsewhere. Re-enable only if you also run Plasma.
+* kitty.conf likewise references the two Breeze GTK modules and the `breeze`
+  icon/cursor theme — harmless without them, but install `breeze-icons` for the
+  intended look.
+* **NixOS caveat:** `install.sh` symlinks into `$HOME/.config`, which works, but
+  the idiomatic NixOS approach is to consume these files via
+  `home-manager` / Hjem. Noctalia upstream ships `homeModule` /
+  `nixosModule` / `hjemModules.default` with a `programs.noctalia.enable`
+  option, plus a [cachix](https://noctalia.cachix.org) binary cache, so you'd
+  typically wrap this repo's files in your own Nix expressions rather than run
+  `install.sh`. See [docs.noctalia.dev → NixOS](https://docs.noctalia.dev/noctalia/getting-started/nixos/).
+* Debian 12 "bookworm" ships GCC 12; building Noctalia from source there
+  requires `g++-13` (`CXX=g++-13`). On Debian/Ubuntu prefer the packaged
+  version over a source build.
+
+
+
 ## Credits
 
 * **Hyprland** config is based on Hyprland's own example config
